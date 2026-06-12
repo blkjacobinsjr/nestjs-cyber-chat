@@ -1,0 +1,22 @@
+services:
+  cyber-api:
+    build:
+      context: .
+      target: build
+    command: npm run start
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - DATABASE_URL=postgresql://devuser:devpassword@db:5432/cyber_dev
+
+  db:
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: devuser
+      POSTGRES_PASSWORD: devpassword
+      POSTGRES_DB: cyber_dev
+
+volumes:
+  postgres_dev_data:

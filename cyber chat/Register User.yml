@@ -6,6 +6,13 @@ info:
 http:
   method: POST
   url: "http://localhost:3232/users "
+  body:
+    type: json
+    data: |-
+      {
+          "email": "hacker@domain.com",
+          "password": "super-secret-password"
+      }
   auth: inherit
 
 settings:
