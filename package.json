@@ -4,6 +4,7 @@
   "description": "Cyber Chat - Threaded Discussion API",
   "main": "dist/main.js",
   "scripts": {
+    "build": "tsc",
     "start": "ts-node src/main.ts",
     "typecheck": "tsc --noEmit",
     "docker:dev": "docker compose -f docker-compose.yml -f docker-compose.dev.yml up",
