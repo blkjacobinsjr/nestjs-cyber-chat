@@ -24,6 +24,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/cyber-chat:latest
 
-      - name: Trigger Render Deploy
-        run: |
-          curl -f -S -L -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+- name: Trigger Render Deploy
+            run: |
+              echo "Checking secret..."
+              curl -f -S -L -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
