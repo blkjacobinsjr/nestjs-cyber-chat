@@ -1,20 +1,19 @@
-import { Controller, Get, Post, Delete, Param, Body, Req, UseGuards, ForbiddenException } from '@nestjs/common';
+import { UseGuards } from 'nestjs/common';
+import {JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
 import { ThreadsService } from './threads.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('threads')
 export class ThreadsController {
   constructor(private readonly threadsService: ThreadsService) {}
 
   @Post()
-  @Post()
-  @UseGuards(JwtAuthGuard)
   createThread(
     @Body('title') title: string,
-    @Body('body') body: string,
-    @Req() req: any
+    @Body('author') author: string,
+    @Body('body') body: string
   ) {
-    return this.threadsService.createThread(title, req.user.username, body);
+    return this.threadsService.createThread(title, author, body);
   }
 
   @Get()
@@ -28,22 +27,16 @@ export class ThreadsController {
   }
 
   @Post(':id/comments')
-  @UseGuards(JwtAuthGuard)
   addComment(
     @Param('id') id: string,
-    @Body('body') body: string,
-    @Req() req: any
+    @Body('author') author: string,
+    @Body('body') body: string
   ) {
-    return this.threadsService.addCommentToThread(Number(id), req.user.username, body);
+    return this.threadsService.addCommentToThread(Number(id), author, body);
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
-  deleteThread(@Param('id') id: string, @Req() req: any) {
-    const thread = this.threadsService.getThreadWithComments(Number(id)).thread;
-    if (thread.author !== req.user.username) {
-        throw new ForbiddenException('Only the author can delete this thread');
-    }
+  deleteThread(@Param('id') id: string) {
     this.threadsService.deleteThreadAndComments(Number(id));
     return { message: 'Thread and all related comments deleted' };
   }

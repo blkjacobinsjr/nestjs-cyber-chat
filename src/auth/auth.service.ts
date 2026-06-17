@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { PublicUser } from '../types';
 import { UsersService } from '../users/users.service';
 
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -15,20 +16,23 @@ export class AuthService {
     return this.usersService.create(email, password);
   }
 
-  async login(email: string, password: string): Promise<{ accessToken: string }> {
+  async login(email: string, password: string) {
     const user = this.usersService.findByEmailWithPassword(email);
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const isMatch = await bcrypt.compare(password, user.passwordHash);
-    if (!isMatch) {
+    const passwordMatches = await bcrypt.compare(password, user.passwordHash);
+    if (!passwordMatches) {
       throw new UnauthorizedException('Invalid credentials');
-    }
 
-    const payload = { sub: user.id, email: user.email };
-    return {
-      accessToken: this.jwtService.sign(payload),
-    };
+    }
+    accessToken =await this.jwtService.signAsync({
+      sub: user.id,
+      email: user.email,
+    })
+    throw new Error('TODO: compare password, sign JWT, return accessToken');
   }
-}
+});
+
+return { accessToken };
