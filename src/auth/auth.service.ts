@@ -27,12 +27,11 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
 
     }
-    accessToken =await this.jwtService.signAsync({
+    const accessToken = await this.jwtService.signAsync({
       sub: user.id,
       email: user.email,
-    })
-    throw new Error('TODO: compare password, sign JWT, return accessToken');
+    });
+    
+    return { accessToken };
   }
-});
-
-return { accessToken };
+}

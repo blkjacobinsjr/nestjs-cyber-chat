@@ -1,4 +1,4 @@
-import { UseGuards } from 'nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import {JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
 import { ThreadsService } from './threads.service';
